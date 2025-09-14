@@ -1,13 +1,19 @@
-import { z } from "zod/mini";
-import { schema } from "../../../core/video";
-// TODO: hardcoding videos list for now, replace with API call
-import videosJSON from "../../../seed.json" with { type: "json" };
+import { useEffect, useState } from "react";
+import { type Video } from "../../../core/video";
 import { VideosList } from "./VideosList";
-const { videos } = z.object({ videos: z.array(schema) }).parse(videosJSON);
+import { trpc } from "../../trpc.ts";
 
-export const VideosPage = () => (
-  <section>
-    <header>Videos</header>
-    <VideosList videos={videos} />
-  </section>
-);
+export const VideosPage = () => {
+  // TODO: handle request states (loading, error, etc)
+  const [videos, setVideos] = useState<Video[]>([]);
+  useEffect(() => {
+    trpc.listVideos.query().then(setVideos);
+  }, []);
+
+  return (
+    <section>
+      <header>Videos</header>
+      <VideosList videos={videos} />
+    </section>
+  );
+};
