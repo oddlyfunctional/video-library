@@ -1,6 +1,6 @@
 import { z } from "zod/mini";
 
-export const schema = z.object({
+export const VideoSchema = z.object({
   id: z.string().check(z.minLength(1)),
   title: z.string().check(z.minLength(1)),
   thumbnail_url: z.url(),
@@ -10,4 +10,14 @@ export const schema = z.object({
   tags: z.array(z.string().check(z.minLength(1))),
 });
 
-export type Video = z.infer<typeof schema>;
+export type Video = z.infer<typeof VideoSchema>;
+
+export const NewVideoSchema = z.pick(VideoSchema, {
+  id: true, // TODO: auto-generate the id
+  title: true,
+  thumbnail_url: true,
+  duration: true,
+  tags: true,
+});
+
+export type NewVideo = z.infer<typeof NewVideoSchema>;

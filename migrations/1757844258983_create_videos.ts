@@ -11,7 +11,7 @@ export async function up(db: Kysely<any>): Promise<void> {
       col.defaultTo(sql`now()`).notNull(),
     )
     .addColumn("duration", "integer")
-    .addColumn("views", "integer")
+    .addColumn("views", "integer", (col) => col.defaultTo(0))
     .addColumn("tags", sql`text[]`)
     .execute();
 
