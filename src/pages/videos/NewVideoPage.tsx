@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { NewVideoSchema, type NewVideo } from "../../../core/video.ts";
 import { trpc } from "../../trpc.ts";
+import { TagsInput } from "./TagsInput.tsx";
 
 type Errors = Partial<Record<keyof NewVideo, string>>;
 
 export const NewVideoPage = () => {
   const [errors, setErrors] = useState<Errors>({});
+  const [tags, setTags] = useState<string[]>([]);
 
   return (
     <form
@@ -15,16 +17,9 @@ export const NewVideoPage = () => {
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const newVideo: Record<string, any> = Object.fromEntries(
-          Array.from(formData.entries()).map(([key, value]) => {
-            // map fields to correct types
-            switch (key) {
-              case "tags":
-                return [key, (value as string).split(",").filter(Boolean)];
-              default:
-                return [key, value];
-            }
-          }),
+          formData.entries(),
         );
+        newVideo.tags = tags;
 
         const result = NewVideoSchema.safeParse(newVideo);
 
@@ -45,8 +40,7 @@ export const NewVideoPage = () => {
       <input type="text" name="title" placeholder="title" />
       {errors.title && <p>{errors.title}</p>}
 
-      <input type="text" name="tags" placeholder="tags" />
-      {errors.tags && <p>{errors.tags}</p>}
+      <TagsInput tags={tags} onSetTags={setTags} />
 
       <button type="submit">submit</button>
     </form>
