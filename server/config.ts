@@ -1,4 +1,9 @@
-import "dotenv/config";
+import dotenv from "dotenv";
+const dotenvPath = process.env.NODE_ENV
+  ? `.env.${process.env.NODE_ENV}`
+  : ".env";
+dotenv.config({ path: dotenvPath });
+
 import { type PoolConfig } from "pg";
 
 export const PORT = process.env.SERVER_PORT

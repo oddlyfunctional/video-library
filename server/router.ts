@@ -1,17 +1,14 @@
-import { listVideos } from "./videos/listVideos.ts";
-import { createVideo } from "./videos/createVideo.ts";
+import { listVideosQuery } from "./videos/listVideos.ts";
+import { createVideoMutation } from "./videos/createVideo.ts";
 import { makeDb } from "../db/index.ts";
 import { type Database } from "../db/types.ts";
-import { publicProcedure, router } from "./trpc.ts";
-import { NewVideoSchema } from "../core/video.ts";
+import { router } from "./trpc.ts";
 
 // TODO: close connections when shutting down the server
 const db = makeDb<Database>();
 
 export const appRouter = router({
-  listVideos: publicProcedure.query(() => listVideos(db)),
-  createVideo: publicProcedure
-    .input(NewVideoSchema)
-    .mutation((opts) => createVideo(db, opts.input)),
+  listVideos: listVideosQuery(db),
+  createVideo: createVideoMutation(db),
 });
 export type AppRouter = typeof appRouter;

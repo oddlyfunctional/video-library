@@ -11,7 +11,8 @@
     "test": "vitest run",
     "test:dev": "vitest dev",
     "db:migrate": "kysely migrate up",
-    "db:reset": "node db/reset.ts && kysely migrate up && kysely seed run"
+    "db:reset": "node db/reset.ts && kysely migrate latest && kysely seed run",
+    "db:test:prepare": "NODE_ENV=test node db/reset.ts && NODE_ENV=test kysely migrate latest"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.87.4",

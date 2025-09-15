@@ -1,6 +1,7 @@
 import { Kysely } from "kysely";
 import type { Database } from "../../db/types";
-import type { NewVideo } from "../../core/video.ts";
+import { NewVideoSchema, type NewVideo } from "../../core/video.ts";
+import { publicProcedure } from "../trpc.ts";
 
 const randomInt = () => Math.floor(Math.random() * 1_000);
 
@@ -16,3 +17,8 @@ export const createVideo = (db: Kysely<Database>, video: NewVideo) => {
     .returningAll()
     .executeTakeFirstOrThrow();
 };
+
+export const createVideoMutation = (db: Kysely<Database>) =>
+  publicProcedure
+    .input(NewVideoSchema)
+    .mutation((opts) => createVideo(db, opts.input));

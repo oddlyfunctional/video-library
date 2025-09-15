@@ -6,7 +6,7 @@ import { VideoSchema } from "../core/video.ts";
 
 export async function seed(db: Kysely<Database>): Promise<void> {
   const { videos } = z
-    .object({ videos: z.array(VideoSchema) })
+    .object({ videos: z.array(z.omit(VideoSchema, { id: true })) })
     .parse(videosJSON);
   await db
     .insertInto("videos")
