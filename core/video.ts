@@ -13,7 +13,6 @@ export const VideoSchema = z.object({
 export type Video = z.infer<typeof VideoSchema>;
 
 export const NewVideoSchema = z.pick(VideoSchema, {
-  id: true, // TODO: auto-generate the id
   title: true,
   thumbnail_url: true,
   duration: true,

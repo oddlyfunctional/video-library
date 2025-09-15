@@ -27,8 +27,6 @@ export const NewVideoPage = () => {
             }
           }),
         );
-        // TODO: handle id in the backend
-        newVideo.id = crypto.randomUUID();
 
         const result = NewVideoSchema.safeParse(newVideo);
 

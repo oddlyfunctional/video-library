@@ -8,5 +8,8 @@ export async function seed(db: Kysely<Database>): Promise<void> {
   const { videos } = z
     .object({ videos: z.array(VideoSchema) })
     .parse(videosJSON);
-  await db.insertInto("videos").values(videos).execute();
+  await db
+    .insertInto("videos")
+    .values(videos.map((video) => ({ ...video, id: undefined })))
+    .execute();
 }

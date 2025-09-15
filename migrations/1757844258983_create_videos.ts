@@ -4,7 +4,7 @@ import { sql, type Kysely } from "kysely";
 export async function up(db: Kysely<any>): Promise<void> {
   await db.schema
     .createTable("videos")
-    .addColumn("id", "varchar", (col) => col.primaryKey())
+    .addColumn("id", "serial", (col) => col.primaryKey())
     .addColumn("title", "text")
     .addColumn("thumbnail_url", "varchar")
     .addColumn("created_at", "timestamp", (col) =>
