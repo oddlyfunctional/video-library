@@ -1,7 +1,7 @@
 import { z } from "zod/mini";
 
 export const VideoSchema = z.object({
-  id: z.string().check(z.minLength(1)),
+  id: z.number(),
   title: z.string().check(z.minLength(1)),
   thumbnail_url: z.url(),
   created_at: z.iso.datetime(),
@@ -14,8 +14,6 @@ export type Video = z.infer<typeof VideoSchema>;
 
 export const NewVideoSchema = z.pick(VideoSchema, {
   title: true,
-  thumbnail_url: true,
-  duration: true,
   tags: true,
 });
 

@@ -18,8 +18,6 @@ export const NewVideoPage = () => {
           Array.from(formData.entries()).map(([key, value]) => {
             // map fields to correct types
             switch (key) {
-              case "duration":
-                return [key, Number(value)];
               case "tags":
                 return [key, (value as string).split(",").filter(Boolean)];
               default:
@@ -46,12 +44,6 @@ export const NewVideoPage = () => {
     >
       <input type="text" name="title" placeholder="title" />
       {errors.title && <p>{errors.title}</p>}
-
-      <input type="text" name="thumbnail_url" placeholder="thumbnail url" />
-      {errors.thumbnail_url && <p>{errors.thumbnail_url}</p>}
-
-      <input type="number" name="duration" placeholder="duration" />
-      {errors.duration && <p>{errors.duration}</p>}
 
       <input type="text" name="tags" placeholder="tags" />
       {errors.tags && <p>{errors.tags}</p>}
