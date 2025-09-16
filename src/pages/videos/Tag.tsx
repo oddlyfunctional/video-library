@@ -1,18 +1,16 @@
+import type { PropsWithChildren } from "react";
+import classnames from "classnames";
+
 export const Tag = ({
-  value,
-  onRemove,
-}: {
-  value: string;
-  onRemove: (tag: string) => void;
-}) => (
-  <div>
-    {value}{" "}
-    <button
-      type="button"
-      aria-label={`Remove ${value}`}
-      onClick={() => onRemove(value)}
-    >
-      x
-    </button>
+  children,
+  className,
+}: PropsWithChildren<{ className?: string }>) => (
+  <div
+    className={classnames(
+      className,
+      "bg-gray-700 text-white text-sm rounded-full inline-block px-2 py-[1px]",
+    )}
+  >
+    {children}
   </div>
 );

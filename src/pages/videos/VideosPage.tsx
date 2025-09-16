@@ -2,6 +2,7 @@ import { VideosList } from "./VideosList";
 import { trpc } from "../../trpc.ts";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { Button } from "../../components/Button.tsx";
 
 export const VideosPage = () => {
   const [orderDirection, setOrderDirection] = useState<"asc" | "desc">("desc");
@@ -17,16 +18,17 @@ export const VideosPage = () => {
 
   return (
     <section>
-      <header>Videos</header>
-
-      <button
-        type="button"
-        onClick={() =>
-          setOrderDirection((dir) => (dir === "asc" ? "desc" : "asc"))
-        }
-      >
-        Creation date {orderDirection === "asc" ? "☝️" : "👇"}
-      </button>
+      <header className="flex justify-between mb-5">
+        <h1 className="text-3xl">All videos</h1>
+        <Button
+          type="button"
+          onClick={() =>
+            setOrderDirection((dir) => (dir === "asc" ? "desc" : "asc"))
+          }
+        >
+          Creation date {orderDirection === "asc" ? "☝️" : "👇"}
+        </Button>
+      </header>
       {videosQuery.isPending && <p>Loading...</p>}
       {videosQuery.isSuccess && <VideosList videos={videosQuery.data} />}
     </section>
