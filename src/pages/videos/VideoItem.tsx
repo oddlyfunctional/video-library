@@ -8,8 +8,11 @@ import { Tag } from "./Tag.tsx";
 
 export const VideoItem = ({ video }: { video: Video }) => (
   <li>
-    <div className="relative">
-      <img src={video.thumbnail_url} />
+    <div
+      className="relative bg-contain aspect-[3/2]"
+      style={{ backgroundImage: `url(${video.thumbnail_url})` }}
+    >
+      {/* <img src={video.thumbnail_url} /> */}
       <div className="absolute right-2 bottom-2 text-xs text-white bg-gray-700 opacity-80 px-1 py-[2px] rounded-sm">
         {formatDuration(video.duration)}
       </div>

@@ -20,14 +20,17 @@ export const VideosPage = () => {
     <section>
       <header className="flex justify-between mb-5">
         <h1 className="text-3xl">All videos</h1>
-        <Button
-          type="button"
-          onClick={() =>
-            setOrderDirection((dir) => (dir === "asc" ? "desc" : "asc"))
-          }
-        >
-          Creation date {orderDirection === "asc" ? "☝️" : "👇"}
-        </Button>
+        <span className="flex gap-2 items-center">
+          <span>Sort by:</span>
+          <Button
+            type="button"
+            onClick={() =>
+              setOrderDirection((dir) => (dir === "asc" ? "desc" : "asc"))
+            }
+          >
+            Creation date {orderDirection === "asc" ? "☝️" : "👇"}
+          </Button>
+        </span>
       </header>
       {videosQuery.isPending && <p>Loading...</p>}
       {videosQuery.isSuccess && <VideosList videos={videosQuery.data} />}

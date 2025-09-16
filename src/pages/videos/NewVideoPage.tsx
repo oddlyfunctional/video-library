@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Input } from "../../components/Input.tsx";
 import { Button } from "../../components/Button.tsx";
 import type { z } from "zod/mini";
+import { useNavigate } from "react-router";
 
 type Errors = Partial<Record<keyof NewVideo, string>>;
 
@@ -25,16 +26,18 @@ const Error = ({ message }: { message: string }) => (
 export const NewVideoPage = () => {
   const [errors, setErrors] = useState<Errors>({});
   const [tags, setTags] = useState<string[]>([]);
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const createVideoMutation = useMutation(
     trpc.createVideo.mutationOptions({
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: trpc.listVideos.pathKey() });
+        navigate("/");
       },
     }),
   );
 
-  const submit = async (form: HTMLFormElement) => {
+  const submit = (form: HTMLFormElement) => {
     const formData = new FormData(form);
 
     const result = NewVideoSchema.safeParse({
@@ -43,10 +46,7 @@ export const NewVideoPage = () => {
     });
 
     if (result.success) {
-      await createVideoMutation.mutate(result.data);
-      form.reset();
-      setTags([]);
-      setErrors({});
+      createVideoMutation.mutate(result.data);
     } else {
       const errors = result.error.issues.reduce((errors, issue) => {
         // I guarantee that the path is flat and a valid error key
@@ -67,27 +67,29 @@ export const NewVideoPage = () => {
           submit(ev.currentTarget);
         }}
       >
-        <label className="font-semibold block mb-4">
-          *Title
-          <Input
-            type="text"
-            name="title"
-            placeholder="Title of your video (e.g. Best cats compilation 2025)"
-          />
-          {errors.title && <Error message={errors.title} />}
-        </label>
+        <fieldset disabled={createVideoMutation.isPending}>
+          <label className="font-semibold block mb-4">
+            *Title
+            <Input
+              type="text"
+              name="title"
+              placeholder="Title of your video (e.g. Best cats compilation 2025)"
+            />
+            {errors.title && <Error message={errors.title} />}
+          </label>
 
-        <label className="font-semibold block mb-8">
-          Tags
-          <TagsInput tags={tags} onSetTags={setTags} />
-        </label>
+          <label className="font-semibold block mb-8">
+            Tags
+            <TagsInput tags={tags} onSetTags={setTags} />
+          </label>
 
-        {createVideoMutation.isError && (
-          <Error message={createVideoMutation.error.message} />
-        )}
-        <Button type="submit" disabled={createVideoMutation.isPending}>
-          {createVideoMutation.isPending ? "Creating..." : "Create"}
-        </Button>
+          {createVideoMutation.isError && (
+            <Error message={createVideoMutation.error.message} />
+          )}
+          <Button type="submit">
+            {createVideoMutation.isPending ? "Creating..." : "Create"}
+          </Button>
+        </fieldset>
       </form>
     </>
   );
