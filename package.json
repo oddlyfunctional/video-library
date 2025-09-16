@@ -4,14 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently 'npm start' 'vite'",
     "start": "node server/index.ts",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "test": "vitest run",
     "test:dev": "vitest dev",
     "db:migrate": "kysely migrate up",
-    "db:reset": "node db/reset.ts && kysely migrate latest && kysely seed run",
+    "db:dev:prepare": "node db/reset.ts && kysely migrate latest && kysely seed run",
     "db:test:prepare": "NODE_ENV=test node db/reset.ts && NODE_ENV=test kysely migrate latest"
   },
   "dependencies": {
@@ -42,6 +42,7 @@
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^5.0.0",
+    "concurrently": "^9.2.1",
     "dotenv": "^17.2.2",
     "eslint": "^9.35.0",
     "eslint-plugin-react-hooks": "^5.2.0",

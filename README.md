@@ -1,69 +1,95 @@
-# React + TypeScript + Vite
+# Video Library
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+A sample video library web app.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech stack
 
-## Expanding the ESLint configuration
+- **Backend**: Express/tRPC
+- **Database**: Kysely (with PostgreSQL)
+- **Frontend**: React/Tailwind CSS
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Setup instructions
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Prerequisites
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- Node.js (>= v23.6.0 due to TypeScript support)
+- PostgreSQL (>= v6.0)
+- npm globally installed
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/oddlyfunctional/video-library.git
+
+# Navigate into the project directory
+cd video-library
+
+# Install dependencies
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Running in development mode
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1. Setup your environment variables (the database credentials in particular are necessary):
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+# Copy the .env template
+cp .env.example .env
+
+# Then edit .env
+```
+
+2. Prepare the database:
+
+```
+npm run db:dev:prepare
+```
+
+3. Run the development servers:
+
+```
+npm run dev
+```
+
+### Running tests
+
+1. Setup your environment variables (the database credentials in particular are necessary):
+
+```
+# Copy the .env template
+cp .env.example .env.test
+
+# Then edit .env.test
+```
+
+2. Prepare the database:
+
+```
+npm run db:test:prepare
+```
+
+3. Run the tests:
+
+```
+# Runs tests once:
+npm test
+
+# Runs tests and keep watching for changes, ideal for development:
+npm run test:dev
+```
+
+## Future improvements
+
+- Transpile server code to relax Node.js version requirements
+- Consider doing Server-Side Rendering
+- Setup react-router to Framework mode for type-safe routes and improve code-splitting (consider changing to `@tanstack/react-router`)
+- Evaluate and improve A11y
+- Better handle loading states (prettier UI, define minimum time for showing spinner)
+- Standardize folder structure
+- Write integration and e2e tests
+- Verify performance for video list on large datasets (perhaps add pagination and/or virtualization)
+- Setup production build (right now there's no easy way to serve the static assets once built)
+- Write `Dockerfile` for easy deployment
